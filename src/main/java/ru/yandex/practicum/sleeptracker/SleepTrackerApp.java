@@ -1,8 +1,9 @@
 package ru.yandex.practicum.sleeptracker;
 
+import ru.yandex.practicum.sleeptracker.analiticfunctions.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -30,15 +31,17 @@ public class SleepTrackerApp {
 
         try {
             sleepingSessionList = sleepLogFileLoader.loadFile();
-            //System.out.println(sleepingSessionList.toString());
-
             functions.add(new SessionsCount());
+            functions.add(new MinimumSessionDuration());
+            functions.add(new MaximumSessionDuration());
+            functions.add(new AverageSessionDuration());
+            functions.add(new BadSessionCount());
 
             List<SleepAnalysisResult> results = functions.stream()
                     .map(func -> func.apply(sleepingSessionList))
                     .peek(sleepAnalysisResult ->
                             System.out.println(sleepAnalysisResult.getResultDescription()))
-                    .collect(Collectors.toList());
+                    .toList();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

@@ -6,6 +6,8 @@ public class SleepingSession {
 
     private LocalDateTime startSleep;
     private LocalDateTime endSleep;
+
+
     private SleepQuality quality;
 
     public SleepingSession(LocalDateTime startSleep, LocalDateTime endSleep, SleepQuality quality) {
@@ -14,6 +16,17 @@ public class SleepingSession {
         this.quality = quality;
     }
 
+    public LocalDateTime getStartSleep() {
+        return startSleep;
+    }
+
+    public LocalDateTime getEndSleep() {
+        return endSleep;
+    }
+
+    public SleepQuality getQuality() {
+        return quality;
+    }
 
     @Override
     public String toString() {

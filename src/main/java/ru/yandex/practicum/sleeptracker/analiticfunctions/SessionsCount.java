@@ -1,13 +1,15 @@
-package ru.yandex.practicum.sleeptracker;
+package ru.yandex.practicum.sleeptracker.analiticfunctions;
 
-import java.util.LinkedList;
+import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
+import ru.yandex.practicum.sleeptracker.SleepingSession;
+
 import java.util.List;
 import java.util.function.Function;
 
 /**
  * Класс для подсчёта количества сессий сна
  */
-public class SessionsCount implements Function<List<SleepingSession>,SleepAnalysisResult> {
+public class SessionsCount implements Function<List<SleepingSession>, SleepAnalysisResult> {
 
     /**
      * Метод возвращает количество сессий сна за представленный период.
@@ -17,7 +19,7 @@ public class SessionsCount implements Function<List<SleepingSession>,SleepAnalys
      */
     @Override
     public SleepAnalysisResult apply(List<SleepingSession> sleepingSessions) {
-        return new SleepAnalysisResult(sleepingSessions.size(),
+        return new SleepAnalysisResult((long) sleepingSessions.size(),
                 "Количество сессий сна за представленный период :" + sleepingSessions.size());
     }
 }
