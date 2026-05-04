@@ -36,6 +36,7 @@ public class SleepTrackerApp {
             functions.add(new MaximumSessionDuration());
             functions.add(new AverageSessionDuration());
             functions.add(new BadSessionCount());
+            functions.add(new CountSleeplessNights());
 
             List<SleepAnalysisResult> results = functions.stream()
                     .map(func -> func.apply(sleepingSessionList))

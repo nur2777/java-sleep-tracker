@@ -1,0 +1,73 @@
+package ru.yandex.practicum.sleeptracker.analiticfunctions;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
+import ru.yandex.practicum.sleeptracker.SleepQuality;
+import ru.yandex.practicum.sleeptracker.SleepingSession;
+
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class CountSleeplessNightsTest {
+
+    private static List<SleepingSession> testSleepingSessions;
+    @BeforeAll
+    static void beforeAll() {
+        testSleepingSessions = List.of(
+                new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), SleepQuality.BAD),
+                new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(20), SleepQuality.GOOD),
+                new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(30), SleepQuality.NORMAL));
+    }
+
+    @Test
+    void testCountSleeplessWhenEmptySessionList() {
+        List<SleepingSession> emptyList = new LinkedList<>();
+        SleepAnalysisResult sleepAnalysisResult = new CountSleeplessNights().apply(emptyList);
+        assertEquals(-1L, sleepAnalysisResult.getResult(),
+                "Неверный результат количества бессонных ночей при пустом списке.");
+    }
+
+    @Test
+    void testCountSleeplessWhenOneSleeplessNight() {
+        List<SleepingSession> oneSleeplessNight = new LinkedList<>();
+        oneSleeplessNight.add(new SleepingSession(
+                LocalDateTime.of(2026,5,4,7,14,0),
+                LocalDateTime.of(2026,5,4,14,14,0),
+                SleepQuality.BAD));
+        SleepAnalysisResult sleepAnalysisResult = new CountSleeplessNights().apply(oneSleeplessNight);
+        assertEquals(0L, sleepAnalysisResult.getResult(),
+                "Неверный результат количества бессонных ночей при одной бессонной ночи.");
+    }
+
+    @Test
+    void testCountSleeplessWhenFewSleeplessNight() {
+        List<SleepingSession> sleepingSessions = new LinkedList<>();
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,4,7,14,0),
+                LocalDateTime.of(2026,5,4,14,14,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,5,23,14,0),
+                LocalDateTime.of(2026,5,6,14,14,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,6,22,14,0),
+                LocalDateTime.of(2026,5,7,4,14,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,9,23,59,0),
+                LocalDateTime.of(2026,5,10,8,0,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,12,9,14,0),
+                LocalDateTime.of(2026,5,12,18,0,0),
+                SleepQuality.BAD));
+        SleepAnalysisResult sleepAnalysisResult = new CountSleeplessNights().apply(sleepingSessions);
+        assertEquals(6L, sleepAnalysisResult.getResult(),
+                "Неверный результат количества бессонных ночей при одной бессонной ночи.");
+    }
+}

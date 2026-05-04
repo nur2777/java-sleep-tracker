@@ -1,8 +1,10 @@
-package ru.yandex.practicum.sleeptracker;
+package ru.yandex.practicum.sleeptracker.analiticfunctions;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.sleeptracker.analiticfunctions.*;
+import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
+import ru.yandex.practicum.sleeptracker.SleepQuality;
+import ru.yandex.practicum.sleeptracker.SleepingSession;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -29,7 +31,7 @@ class SleepingSessionTest {
     }
 
     @Test
-    void testSessionCountWhenZeroSessions() {
+    void testSessionCountWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new SessionsCount().apply(emptyList);
         assertEquals(0L,sleepAnalysisResult.getResult(),
@@ -44,11 +46,11 @@ class SleepingSessionTest {
     }
 
     @Test
-    void testMinimumSessionDurationWithoutSession() {
+    void testMinimumSessionDurationWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new MinimumSessionDuration().apply(emptyList);
         assertEquals(0L,sleepAnalysisResult.getResult(),
-                "Неверный результат минимального периода без сессий в списке");
+                "Неверный результат минимального периода без сессий в исходном списке");
     }
 
     @Test
@@ -59,11 +61,11 @@ class SleepingSessionTest {
     }
 
     @Test
-    void testMaximumSessionDurationWithoutSession() {
+    void testMaximumSessionDurationWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new MaximumSessionDuration().apply(emptyList);
         assertEquals(0L,sleepAnalysisResult.getResult(),
-                "Неверный результат максимального периода без сессий в списке");
+                "Неверный результат максимального периода без сессий в исходном списке");
     }
 
     @Test
@@ -74,11 +76,11 @@ class SleepingSessionTest {
     }
 
     @Test
-    void testAverageSessionDurationWithoutSession() {
+    void testAverageSessionDurationWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new AverageSessionDuration().apply(emptyList);
         assertEquals(0L,sleepAnalysisResult.getResult(),
-                "Неверный результат средней продолжительности без сессий в списке");
+                "Неверный результат средней продолжительности без сессий в исходном списке");
     }
 
     @Test
@@ -89,10 +91,10 @@ class SleepingSessionTest {
     }
 
     @Test
-    void testBadSessionCountWithoutSession() {
+    void testBadSessionCountWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new BadSessionCount().apply(emptyList);
         assertEquals(0L,sleepAnalysisResult.getResult(),
-                "Неверный результат количества сессий с плохим качеством сна без сессий в списке");
+                "Неверный результат количества сессий с плохим качеством сна без сессий в исходном списке");
     }
 }
