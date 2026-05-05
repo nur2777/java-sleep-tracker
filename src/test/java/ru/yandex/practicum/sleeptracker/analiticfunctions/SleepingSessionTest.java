@@ -23,7 +23,7 @@ class SleepingSessionTest {
                 new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(20), SleepQuality.GOOD),
                 new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(30), SleepQuality.NORMAL));
     }
-    
+
     @Test
     void testSessionCountWhenThreeSessions() {
         SleepAnalysisResult sleepAnalysisResult =  new SessionsCount().apply(testSleepingSessions);
