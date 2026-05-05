@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserChronotypeAnaliseTest {
 
     private static final List<SleepingSession> testSleepingSessions = new LinkedList<>();
+
     @BeforeEach
     void beforeEach() {
         testSleepingSessions.clear();
