@@ -2,13 +2,22 @@ package ru.yandex.practicum.sleeptracker;
 
 import java.time.LocalDateTime;
 
+/**
+ * Класс реализует объект сессии сна
+ */
 public class SleepingSession {
-
-    private LocalDateTime startSleep;
-    private LocalDateTime endSleep;
-
-
-    private SleepQuality quality;
+    /**
+     * Дата и время начала сна
+     */
+    private final LocalDateTime startSleep;
+    /**
+     * Дата и время окончания сна
+     */
+    private final LocalDateTime endSleep;
+    /**
+     * Качество сна
+     */
+    private final SleepQuality quality;
 
     public SleepingSession(LocalDateTime startSleep, LocalDateTime endSleep, SleepQuality quality) {
         this.startSleep = startSleep;

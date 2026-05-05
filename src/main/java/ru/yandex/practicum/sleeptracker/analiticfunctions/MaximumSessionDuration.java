@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * Класс для подсчета максимальной продолжительности сессии (в минутах)
+ */
 public class MaximumSessionDuration implements Function<List<SleepingSession>, SleepAnalysisResult> {
 
     /**

@@ -1,40 +1,46 @@
 package ru.yandex.practicum.sleeptracker;
 
+import ru.yandex.practicum.sleeptracker.exceptions.SleepTrackerExceptions;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
- * Класс предназначен для загрузки лог-файла
+ * Класс предназначен для загрузки лог-файла с сессиями сна
  */
 public class SleepLogFileLoader {
-
+    /**
+     * Имя лог-файла с данными
+     */
     private final String sleepLogFileName;
-
+    /**
+     * Кодировка файла
+     */
     private final Charset charset;
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+    /**
+     * Формат даты и времени начала и конце сессии сна
+     */
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
     public SleepLogFileLoader(String sleepLogFileName, String charsetName) {
         this.sleepLogFileName = sleepLogFileName;
         this.charset = Charset.forName(charsetName);
     }
 
-    public LinkedList<SleepingSession> loadFile() throws IOException {
-        LinkedList<SleepingSession> sleepingSessions = new LinkedList<>();
+    /** Метод загружает лог-файл с данными
+     * @return возвращает список сессий
+     */
+    public LinkedList<SleepingSession> loadFile() throws IOException, SleepTrackerExceptions {
+        LinkedList<SleepingSession> sleepingSessions;
         try (Reader fileReader = new FileReader(sleepLogFileName,charset)) {
-            BufferedReader buffer = new BufferedReader(fileReader);
-            while (buffer.ready()) {
-                String row = buffer.readLine();
-                sleepingSessions.add(convertToSleepSession(row));
-            }
-//            if (!dictionary.getWords().isEmpty()) {
-//                logFile.println("Загрузка словаря успешно завершена. Загружено " + dictionary.size() + " слов");
-//            } else {
-//                throw new WordleGameExceptions("Ошибка при загрузке словаря. Словарь пуст, ни одно " +
-//                        "слово не загружено.", logFile);
-//            }
+            sleepingSessions = new BufferedReader(fileReader)
+                    .lines()
+                    .map(this::convertToSleepSession)
+                    .collect(Collectors.toCollection(LinkedList::new));
+
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("Исходный файл словаря " + sleepLogFileName + " не найден. " +
                     "Загрузка прервана!");
@@ -42,11 +48,11 @@ public class SleepLogFileLoader {
         return sleepingSessions;
     }
 
-    private SleepingSession convertToSleepSession(String row) {
-//        01.10.25 23:15;02.10.25 07:30;GOOD
-//        System.out.println(row.substring(0, row.indexOf(";")));
-//        System.out.println(row.substring(row.indexOf(";")+1, row.lastIndexOf(";")));
-//        System.out.println(row.substring(row.lastIndexOf(";")+1));
+    /** Метод конверирует строку из лог-файла в объект сессии сна
+     * @param row строка из лог-файла
+     * @return объект сессии сна
+     */
+    private SleepingSession convertToSleepSession(String row) throws SleepTrackerExceptions {
         LocalDateTime startSleep = LocalDateTime.parse(row.substring(0, row.indexOf(";")), formatter);
         LocalDateTime endSleep = LocalDateTime.parse(row.substring(row.indexOf(";")+1, row.lastIndexOf(";"))
                 , formatter);
@@ -63,7 +69,8 @@ public class SleepLogFileLoader {
                 sleepQuality = SleepQuality.BAD;
                 break;
             default:
-                System.out.println("ERROR"); //TODO
+                throw new SleepTrackerExceptions("В лог-файле сна для сессии c " + startSleep.toString()
+                        + " по " + endSleep.toString() + " указан неверный тип качества сна");
         }
         return new SleepingSession(startSleep, endSleep, sleepQuality);
     }

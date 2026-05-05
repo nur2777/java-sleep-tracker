@@ -13,7 +13,6 @@ public class SessionsCount implements Function<List<SleepingSession>, SleepAnaly
 
     /**
      * Метод возвращает количество сессий сна за представленный период.
-     *
      * @param sleepingSessions список сессий
      * @return количество сессий сна
      */

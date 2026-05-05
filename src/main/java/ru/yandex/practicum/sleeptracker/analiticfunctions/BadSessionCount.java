@@ -4,15 +4,15 @@ import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.SleepQuality;
 import ru.yandex.practicum.sleeptracker.SleepingSession;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
+/**
+ * Класс для подсчета количества сессий сна с плохим качеством сна
+ */
 public class BadSessionCount implements Function<List<SleepingSession>, SleepAnalysisResult> {
     /**
      * Метод возвращает количество сессий сна с плохим качеством сна.
-     *
      * @param sleepingSessions список сессий
      * @return количество сессий сна с плохим качеством
      */

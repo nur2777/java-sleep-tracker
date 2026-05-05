@@ -1,13 +1,13 @@
 package ru.yandex.practicum.sleeptracker;
 
 import ru.yandex.practicum.sleeptracker.analiticfunctions.*;
+import ru.yandex.practicum.sleeptracker.exceptions.SleepTrackerExceptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class SleepTrackerApp {
     /**
@@ -15,9 +15,15 @@ public class SleepTrackerApp {
      */
     private static final String charset = "UTF8";
 
+    /**
+     * Список сессий сна
+     */
     private static List<SleepingSession> sleepingSessionList = new LinkedList<>();
 
-    private static List<Function<List<SleepingSession>, SleepAnalysisResult>> functions = new ArrayList(); //TODO
+    /**
+     * Список функций для выполнения
+     */
+    private static final List<Function<List<SleepingSession>, SleepAnalysisResult>> functions = new ArrayList<>();
 
     public static void main(String[] args) {
         System.out.println("Добро пожаловать в Sleep Tracker Analyzer!");
@@ -26,25 +32,28 @@ public class SleepTrackerApp {
             return;
         }
         final String sleepLogFile = args[0];
-        //System.out.println(sleepLogFile);
         SleepLogFileLoader sleepLogFileLoader = new SleepLogFileLoader(sleepLogFile,charset);
 
         try {
             sleepingSessionList = sleepLogFileLoader.loadFile();
-            functions.add(new SessionsCount());
-            functions.add(new MinimumSessionDuration());
-            functions.add(new MaximumSessionDuration());
-            functions.add(new AverageSessionDuration());
-            functions.add(new BadSessionCount());
-            functions.add(new CountSleeplessNights());
+            if (sleepingSessionList.isEmpty()) {
+                System.out.println("Не удалось получить данные, список сессий пуст. Дальнейший анализ невозможен.");
+            } else {
+                functions.add(new SessionsCount());
+                functions.add(new MinimumSessionDuration());
+                functions.add(new MaximumSessionDuration());
+                functions.add(new AverageSessionDuration());
+                functions.add(new BadSessionCount());
+                functions.add(new CountSleeplessNights());
+                functions.add(new UserChronotypeAnalise());
 
-            List<SleepAnalysisResult> results = functions.stream()
-                    .map(func -> func.apply(sleepingSessionList))
-                    .peek(sleepAnalysisResult ->
-                            System.out.println(sleepAnalysisResult.getResultDescription()))
-                    .toList();
-
-        } catch (IOException e) {
+                List<SleepAnalysisResult> results = functions.stream()
+                        .map(func -> func.apply(sleepingSessionList))
+                        .peek(sleepAnalysisResult ->
+                                System.out.println(sleepAnalysisResult.getResultDescription()))
+                        .toList();
+            }
+        } catch (IOException | SleepTrackerExceptions e) {
             System.out.println(e.getMessage());
         } finally {
             System.out.println("Программа завершена.");

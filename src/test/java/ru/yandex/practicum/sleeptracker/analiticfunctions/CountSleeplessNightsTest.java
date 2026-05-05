@@ -14,15 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CountSleeplessNightsTest {
 
-    private static List<SleepingSession> testSleepingSessions;
-    @BeforeAll
-    static void beforeAll() {
-        testSleepingSessions = List.of(
-                new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(10), SleepQuality.BAD),
-                new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(20), SleepQuality.GOOD),
-                new SleepingSession(LocalDateTime.now(), LocalDateTime.now().plusMinutes(30), SleepQuality.NORMAL));
-    }
-
     @Test
     void testCountSleeplessWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
@@ -39,7 +30,7 @@ class CountSleeplessNightsTest {
                 LocalDateTime.of(2026,5,4,14,14,0),
                 SleepQuality.BAD));
         SleepAnalysisResult sleepAnalysisResult = new CountSleeplessNights().apply(oneSleeplessNight);
-        assertEquals(0L, sleepAnalysisResult.getResult(),
+        assertEquals(1L, sleepAnalysisResult.getResult(),
                 "Неверный результат количества бессонных ночей при одной бессонной ночи.");
     }
 
@@ -68,6 +59,34 @@ class CountSleeplessNightsTest {
                 SleepQuality.BAD));
         SleepAnalysisResult sleepAnalysisResult = new CountSleeplessNights().apply(sleepingSessions);
         assertEquals(6L, sleepAnalysisResult.getResult(),
-                "Неверный результат количества бессонных ночей при одной бессонной ночи.");
+                "Неверный результат количества бессонных ночей при нескольких бессонных ночах.");
+    }
+
+    @Test
+    void testCountSleeplessWhenAllSleeplessNight() {
+        List<SleepingSession> sleepingSessions = new LinkedList<>();
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,4,7,14,0),
+                LocalDateTime.of(2026,5,4,14,14,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,6,6,14,0),
+                LocalDateTime.of(2026,5,6,14,14,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,7,22,14,0),
+                LocalDateTime.of(2026,5,7,23,14,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,10,7,59,0),
+                LocalDateTime.of(2026,5,10,8,0,0),
+                SleepQuality.BAD));
+        sleepingSessions.add(new SleepingSession(
+                LocalDateTime.of(2026,5,12,9,14,0),
+                LocalDateTime.of(2026,5,12,18,0,0),
+                SleepQuality.BAD));
+        SleepAnalysisResult sleepAnalysisResult = new CountSleeplessNights().apply(sleepingSessions);
+        assertEquals(9L, sleepAnalysisResult.getResult(),
+                "Неверный результат количества бессонных ночей для случая когда все ночи бессонные.");
     }
 }
