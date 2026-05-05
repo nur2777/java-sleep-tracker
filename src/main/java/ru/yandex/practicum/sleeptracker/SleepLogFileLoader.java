@@ -25,6 +25,7 @@ public class SleepLogFileLoader {
      * Формат даты и времени начала и конце сессии сна
      */
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+
     public SleepLogFileLoader(String sleepLogFileName, String charsetName) {
         this.sleepLogFileName = sleepLogFileName;
         this.charset = Charset.forName(charsetName);
@@ -54,10 +55,11 @@ public class SleepLogFileLoader {
      */
     private SleepingSession convertToSleepSession(String row) throws SleepTrackerExceptions {
         LocalDateTime startSleep = LocalDateTime.parse(row.substring(0, row.indexOf(";")), formatter);
-        LocalDateTime endSleep = LocalDateTime.parse(row.substring(row.indexOf(";")+1, row.lastIndexOf(";"))
-                , formatter);
-        String quality = row.substring(row.lastIndexOf(";")+1);
-        SleepQuality sleepQuality = null;
+        LocalDateTime endSleep = LocalDateTime.parse(row.substring(row.indexOf(";") + 1, row.lastIndexOf(";")),
+                formatter);
+        String quality = row.substring(row.lastIndexOf(";") + 1);
+        SleepQuality sleepQuality;
+
         switch (quality) {
             case "GOOD":
                 sleepQuality = SleepQuality.GOOD;
