@@ -35,7 +35,7 @@ class SleepingSessionTest {
     void testSessionCountWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new SessionsCount().apply(emptyList);
-        assertEquals(0L,sleepAnalysisResult.getResult(),
+        assertEquals(0,sleepAnalysisResult.getResult(),
                 "Неверный результат количества сессий при пустом логе. (0)");
     }
 
@@ -50,7 +50,7 @@ class SleepingSessionTest {
     void testMinimumSessionDurationWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new MinimumSessionDuration().apply(emptyList);
-        assertEquals(0L,sleepAnalysisResult.getResult(),
+        assertNull(sleepAnalysisResult.getResult(),
                 "Неверный результат минимального периода без сессий в исходном списке");
     }
 
@@ -65,7 +65,7 @@ class SleepingSessionTest {
     void testMaximumSessionDurationWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new MaximumSessionDuration().apply(emptyList);
-        assertEquals(0L,sleepAnalysisResult.getResult(),
+        assertNull(sleepAnalysisResult.getResult(),
                 "Неверный результат максимального периода без сессий в исходном списке");
     }
 
@@ -80,7 +80,7 @@ class SleepingSessionTest {
     void testAverageSessionDurationWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new AverageSessionDuration().apply(emptyList);
-        assertEquals(0L,sleepAnalysisResult.getResult(),
+        assertEquals(0,sleepAnalysisResult.getResult(),
                 "Неверный результат средней продолжительности без сессий в исходном списке");
     }
 
@@ -95,7 +95,7 @@ class SleepingSessionTest {
     void testBadSessionCountWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new BadSessionCount().apply(emptyList);
-        assertEquals(0L,sleepAnalysisResult.getResult(),
+        assertEquals(0,sleepAnalysisResult.getResult(),
                 "Неверный результат количества сессий с плохим качеством сна без сессий в исходном списке");
     }
 }

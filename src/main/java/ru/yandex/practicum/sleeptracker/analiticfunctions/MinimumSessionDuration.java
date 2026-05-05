@@ -28,7 +28,7 @@ public class MinimumSessionDuration implements Function<List<SleepingSession>, S
                 .min(Long::compare);
 
         if (minDurationInMinutes.isEmpty()) {
-            return new SleepAnalysisResult(0L,
+            return new SleepAnalysisResult(null,
                     "Не удалось определить минимальную сессию!");
         } else {
             return new SleepAnalysisResult(minDurationInMinutes.get(),

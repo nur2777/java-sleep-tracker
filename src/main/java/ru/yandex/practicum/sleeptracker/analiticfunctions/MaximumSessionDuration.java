@@ -27,7 +27,7 @@ public class MaximumSessionDuration implements Function<List<SleepingSession>, S
                 .max(Long::compare);
 
         if (maxDurationInMinutes.isEmpty()) {
-            return new SleepAnalysisResult(0L,
+            return new SleepAnalysisResult(null,
                     "Не удалось определить максимальную сессию!");
         } else {
             return new SleepAnalysisResult(maxDurationInMinutes.get(),

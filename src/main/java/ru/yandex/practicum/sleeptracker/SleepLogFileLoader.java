@@ -13,18 +13,43 @@ import java.util.stream.Collectors;
  * Класс предназначен для загрузки лог-файла с сессиями сна
  */
 public class SleepLogFileLoader {
+
     /**
      * Имя лог-файла с данными
      */
-    private final String sleepLogFileName;
+    private String sleepLogFileName;
     /**
      * Кодировка файла
      */
-    private final Charset charset;
+    private Charset charset;
     /**
      * Формат даты и времени начала и конце сессии сна
      */
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
+
+    public String getSleepLogFileName() {
+        return sleepLogFileName;
+    }
+
+    public void setSleepLogFileName(String sleepLogFileName) {
+        this.sleepLogFileName = sleepLogFileName;
+    }
+
+    public Charset getCharset() {
+        return charset;
+    }
+
+    public void setCharset(Charset charset) {
+        this.charset = charset;
+    }
+
+    public DateTimeFormatter getFormatter() {
+        return formatter;
+    }
+
+    public void setFormatter(DateTimeFormatter formatter) {
+        this.formatter = formatter;
+    }
 
     public SleepLogFileLoader(String sleepLogFileName, String charsetName) {
         this.sleepLogFileName = sleepLogFileName;

@@ -16,6 +16,10 @@ import java.util.function.Predicate;
 public class CountSleeplessNights implements Function<List<SleepingSession>, SleepAnalysisResult> {
 
     /**
+     * Верхняя граница бессонной ночи согласно ТЗ равна 6 часам утра 0 минутам
+     */
+    public static final LocalTime maxLocalTimeInSleeplessNight = LocalTime.of(6,0);
+    /**
      * Предикат для описания бессонной ночи
      */
     private static final Predicate<SleepingSession> isSleeplessNights = sleepingSession -> {
@@ -23,8 +27,8 @@ public class CountSleeplessNights implements Function<List<SleepingSession>, Sle
         if (sleepingSession.getStartSleep().toLocalDate().isBefore(sleepingSession.getEndSleep()
                 .toLocalDate())) {
             return true;
-            // проверяем начался ли сон до 6 утра
-        } else return sleepingSession.getStartSleep().toLocalTime().isBefore(LocalTime.of(6, 0));
+            // проверяем начался ли сон до верхней границы бессонной ночи
+        } else return sleepingSession.getStartSleep().toLocalTime().isBefore(maxLocalTimeInSleeplessNight);
     };
 
     /** Метод возвращающий количество бессонных ночей
@@ -51,7 +55,8 @@ public class CountSleeplessNights implements Function<List<SleepingSession>, Sle
             return new SleepAnalysisResult((long) countSleeplessNights,
                     "Количество бессонных ночей :" + countSleeplessNights);
         } else {
-            return new SleepAnalysisResult(-1L,
+            //возвращаем пустой результат, так как подсчёт не выполнен
+            return new SleepAnalysisResult(null,
                     "Список сессий сна пуст. Подсчёт не выполнен.");
         }
     }

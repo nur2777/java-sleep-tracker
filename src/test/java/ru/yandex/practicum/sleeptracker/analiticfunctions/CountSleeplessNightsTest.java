@@ -17,7 +17,7 @@ class CountSleeplessNightsTest {
     void testCountSleeplessWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult = new CountSleeplessNights().apply(emptyList);
-        assertEquals(-1L, sleepAnalysisResult.getResult(),
+        assertNull(sleepAnalysisResult.getResult(),
                 "Неверный результат количества бессонных ночей при пустом списке.");
     }
 

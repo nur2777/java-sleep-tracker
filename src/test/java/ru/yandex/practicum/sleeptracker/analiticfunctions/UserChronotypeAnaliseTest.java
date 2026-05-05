@@ -89,7 +89,7 @@ class UserChronotypeAnaliseTest {
     void testChronotypeWhenEmptySessionList() {
         List<SleepingSession> emptyList = new LinkedList<>();
         SleepAnalysisResult sleepAnalysisResult =  new UserChronotypeAnalise().apply(emptyList);
-        assertEquals(-1,sleepAnalysisResult.getResult(),
+        assertNull(sleepAnalysisResult.getResult(),
                 "Неверный результат количества сессий при заполненном логе. (3)");
     }
 }

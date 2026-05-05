@@ -15,17 +15,36 @@ import java.util.function.Predicate;
 public class UserChronotypeAnalise implements Function<List<SleepingSession>, SleepAnalysisResult> {
 
     /**
-     * Предикат для определения типа Сова
+     * Нижняя граница времени для хронотипа Сова согласно ТЗ 23 часа 0 минут
+     */
+    private static final LocalTime minLocalTimeForOwl = LocalTime.of(23, 0);
+    /**
+     * Верхняя граница времени для хронотипа Сова согласно ТЗ 9 часов 0 минут
+     */
+    private static final LocalTime maxLocalTimeForOwl = LocalTime.of(9, 0);
+    /**
+     * Верхняя граница бессонной ночи согласно ТЗ равна 6 часам утра 0 минутам
+     */
+    private static final LocalTime maxLocalTimeInSleeplessNight = LocalTime.of(6,0);
+    /**
+     * Нижняя граница времени для хронотипа Жаворонок согласно ТЗ 22 часов 0 минут
+     */
+    private static final LocalTime minLocalTimeForLark = LocalTime.of(22, 0);
+    /**
+     * Верхняя граница времени для хронотипа Жаворонок согласно ТЗ 7 часов 0 минут
+     */
+    private static final LocalTime maxLocalTimeForLark = LocalTime.of(7, 0);
+    /**
+     * Предикат для определения хронотипа Сова
      */
     private final Predicate<SleepingSession> isOwl = sleepingSession -> {
         LocalTime startSleepTime = sleepingSession.getStartSleep().toLocalTime();
         LocalTime endSleepTime = sleepingSession.getEndSleep().toLocalTime();
-        if ((startSleepTime.isAfter(LocalTime.of(23,0))
-                && endSleepTime.isAfter(LocalTime.of(9,0))
+
+        if ((startSleepTime.isAfter(minLocalTimeForOwl) && endSleepTime.isAfter(maxLocalTimeForOwl)
                 && sleepingSession.getStartSleep().toLocalDate().isBefore(sleepingSession.getEndSleep().toLocalDate()))
             ||
-            (startSleepTime.isBefore(LocalTime.of(6,0))
-                && endSleepTime.isAfter(LocalTime.of(9,0))
+            (startSleepTime.isBefore(maxLocalTimeInSleeplessNight) && endSleepTime.isAfter(maxLocalTimeForOwl)
                 && sleepingSession.getStartSleep().toLocalDate().isEqual(sleepingSession.getEndSleep().toLocalDate()))
         ) {
             return true;
@@ -35,15 +54,14 @@ public class UserChronotypeAnalise implements Function<List<SleepingSession>, Sl
     };
 
     /**
-     * Предикат для определения типа Жаворонок
+     * Предикат для определения хронотипа Жаворонок
      */
     private final Predicate<SleepingSession> isLark = sleepingSession -> {
         LocalTime startSleepTime = sleepingSession.getStartSleep().toLocalTime();
         LocalTime endSleepTime = sleepingSession.getEndSleep().toLocalTime();
-        if (startSleepTime.isBefore(LocalTime.of(22,0))
-            && endSleepTime.isBefore(LocalTime.of(7,0))
-            && sleepingSession.getStartSleep().toLocalDate().isBefore(sleepingSession.getEndSleep().toLocalDate())
-        ) {
+
+        if (startSleepTime.isBefore(minLocalTimeForLark) && endSleepTime.isBefore(maxLocalTimeForLark)
+            && sleepingSession.getStartSleep().toLocalDate().isBefore(sleepingSession.getEndSleep().toLocalDate())) {
             return true;
         } else {
             return false;
@@ -51,24 +69,20 @@ public class UserChronotypeAnalise implements Function<List<SleepingSession>, Sl
     };
 
     /**
-     * Предикат для определения типа голубь
+     * Предикат для определения хронотипа Голубь
      */
     private final Predicate<SleepingSession> isPigeon = sleepingSession -> {
         LocalTime startSleepTime = sleepingSession.getStartSleep().toLocalTime();
         LocalTime endSleepTime = sleepingSession.getEndSleep().toLocalTime();
-        if ((startSleepTime.isBefore(LocalTime.of(23,0))
-             && endSleepTime.isAfter(LocalTime.of(9,0))
+        if ((startSleepTime.isBefore(minLocalTimeForOwl) && endSleepTime.isAfter(minLocalTimeForOwl)
              && sleepingSession.getStartSleep().toLocalDate().isBefore(sleepingSession.getEndSleep().toLocalDate()))
            ||
-            (startSleepTime.isAfter(LocalTime.of(23,0))
-             && endSleepTime.isBefore(LocalTime.of(9,0)))
+            (startSleepTime.isAfter(minLocalTimeForOwl) && endSleepTime.isBefore(minLocalTimeForOwl))
            ||
-            (startSleepTime.isBefore(LocalTime.of(22,0))
-             && endSleepTime.isAfter(LocalTime.of(7,0))
+            (startSleepTime.isBefore(minLocalTimeForLark) && endSleepTime.isAfter(maxLocalTimeForLark)
              && sleepingSession.getStartSleep().toLocalDate().isBefore(sleepingSession.getEndSleep().toLocalDate()))
            ||
-            (startSleepTime.isAfter(LocalTime.of(22,0))
-             && endSleepTime.isBefore(LocalTime.of(7,0)))
+            (startSleepTime.isAfter(minLocalTimeForLark) && endSleepTime.isBefore(maxLocalTimeForLark))
         ) {
             return true;
         } else {
@@ -102,7 +116,7 @@ public class UserChronotypeAnalise implements Function<List<SleepingSession>, Sl
             }
             return new SleepAnalysisResult(chronotype);
         } else {
-            return new SleepAnalysisResult(-1L,"Список сессий пуст, анализ невозможен!");
+            return new SleepAnalysisResult(null,"Список сессий пуст, анализ невозможен!");
         }
     }
 }
