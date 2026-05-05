@@ -26,6 +26,7 @@ public class CountSleeplessNights implements Function<List<SleepingSession>, Sle
             // проверяем начался ли сон до 6 утра
         } else return sleepingSession.getStartSleep().toLocalTime().isBefore(LocalTime.of(6, 0));
     };
+
     /** Метод возвращающий количество бессонных ночей
      * @param sleepingSessions список сессий сна
      * @return количество бессонных ночей

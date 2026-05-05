@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
  * Класс для подсчета средней продолжительность сессии (в минутах)
  */
 public class AverageSessionDuration implements Function<List<SleepingSession>, SleepAnalysisResult> {
+
     /**
      * Метод вычисляет среднюю продолжительность сессии (в минутах).
      * @param sleepingSessions список сессий

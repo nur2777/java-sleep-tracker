@@ -11,6 +11,7 @@ import java.util.function.Function;
  * Класс для подсчета количества сессий сна с плохим качеством сна
  */
 public class BadSessionCount implements Function<List<SleepingSession>, SleepAnalysisResult> {
+
     /**
      * Метод возвращает количество сессий сна с плохим качеством сна.
      * @param sleepingSessions список сессий
