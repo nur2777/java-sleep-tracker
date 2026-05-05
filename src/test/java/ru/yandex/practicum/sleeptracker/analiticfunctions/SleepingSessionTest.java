@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SleepingSessionTest {
 
     private static List<SleepingSession> testSleepingSessions;
+
     @BeforeAll
     static void beforeAll() {
         testSleepingSessions = List.of(
